@@ -1,0 +1,9 @@
+--- !<org.apereo.cas.services.RegexRegisteredService>
+serviceId: "https?://localhost:8091/.*"
+name: "demo-app1"
+id: 10000001
+description: "demo-app1."
+attributeReleasePolicy: !<org.apereo.cas.services.ReturnAllAttributeReleasePolicy> { }
+accessStrategy: !<org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy>
+  enabled: true
+  ssoEnabled: true

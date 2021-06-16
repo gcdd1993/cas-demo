@@ -1,0 +1,61 @@
+import java.text.SimpleDateFormat
+
+plugins {
+    id "io.spring.dependency-management" version "1.0.11.RELEASE"
+    id "org.springframework.boot" version "${spring_boot_version}"
+    id "org.jetbrains.kotlin.jvm" version "${kotlin_version}"
+    id "org.jetbrains.kotlin.plugin.spring" version "${kotlin_version}"
+    id "org.jetbrains.kotlin.kapt" version "${kotlin_version}"
+    id "org.jetbrains.kotlin.plugin.noarg" version "${kotlin_version}"
+}
+
+def javaVersion = System.getProperty("java.version")
+if (!javaVersion.startsWith("11")) {
+    throw new RuntimeException("Incompatible JRE version: " + javaVersion + ". Use JRE 11 instead.")
+}
+
+group = "io.github.gcdd1993"
+version root_version
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+jar {
+    enabled = true
+    manifest {
+        attributes(
+                "Implementation-Title": project.name,
+                "Implementation-Version": project.version,
+                "Built-By": System.properties["user.name"],
+                "Build-Timestamp": new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
+                "Created-By": "Gradle ${gradle.gradleVersion}",
+                "Build-Jdk": "${System.properties["java.version"]} (${System.properties["java.vendor"]} ${System.properties["java.vm.version"]})",
+                "Build-OS": "${System.properties["os.name"]} ${System.properties["os.arch"]} ${System.properties["os.version"]}"
+        )
+    }
+}
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=warn"]
+        jvmTarget = "11"
+    }
+}
+
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.security:spring-security-cas")
+    implementation("org.apache.httpcomponents:httpclient:4.5.12")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
+
+test {
+    useJUnitPlatform()
+}
+
+springBoot {
+    buildInfo()
+}

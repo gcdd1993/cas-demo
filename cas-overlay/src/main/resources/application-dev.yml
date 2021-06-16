@@ -1,0 +1,12 @@
+custom:
+  datasource:
+    url: jdbc:postgresql://192.168.2.23:30002/customer_center
+    username: postgres
+    password: olxin88
+cas:
+  ticket:
+    registry:
+      redis:
+        host: 192.168.2.23
+        port: 30001
+        database: 5

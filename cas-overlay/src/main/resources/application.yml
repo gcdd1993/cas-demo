@@ -1,0 +1,77 @@
+spring:
+  application:
+    name: cas-overlay
+logging:
+  config: classpath:logback.xml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      enabled: true
+server:
+  ssl:
+    enabled: false
+cas:
+  locale:
+    defaultValue: zh_CN
+  tgc:
+    pin-to-session: false
+    crypto:
+      signing:
+        key: 0O9wIQpY24YLaS6c-FIzvsnPHWvZ1xR5dLpzN9RiHT2969DZb_2PX_fMr2DfGvAQR_B0uhhR-sLPGUwdX7WWPg
+      encryption:
+        key: XnGOBwrD5Xim1RYPEBPLxIaB7qyBsntMzN_ObL25vQk
+  webflow:
+    crypto:
+      signing:
+        key: PVtJkFSidLmb-3phv2wrATUHYoy9MYzUSryllmqBUHsNAvMePSjlKrsNMCqB-j1O0WQnxJNeMZjj-fhYINA9sw
+      encryption:
+        key: 62ZxLPEliyJmncNE3Vyqjw==
+  server:
+    name: https://passport.allx.cloud
+    prefix: ${cas.server.name}/cas
+  authn:
+    accept:
+      users: ""
+    jdbc:
+      query:
+        - name: customer-user
+          order: 2
+          url: ${custom.datasource.url}
+          user: ${custom.datasource.username}
+          password: ${custom.datasource.password}
+          driverClass: org.postgresql.Driver
+          dialect: org.hibernate.dialect.PostgreSQL95Dialect
+          sql: "SELECT * FROM t_customer_user WHERE phone = ?"
+          fieldPassword: password
+          fieldDisabled: disabled
+          fieldExpired: expired
+          principalAttributeList: muid,name,phone,email
+          passwordEncoder:
+            type: PBKDF2
+            secret: "e561a4e6-c82c-11eb-b8bc-0242ac130003"
+            strength: 180000
+        - name: corp-user
+          order: 3
+          url: ${custom.datasource.url}
+          user: ${custom.datasource.username}
+          password: ${custom.datasource.password}
+          driverClass: org.postgresql.Driver
+          dialect: org.hibernate.dialect.PostgreSQL95Dialect
+          sql: "SELECT * FROM t_corp_user WHERE phone = ?"
+          fieldPassword: password
+          fieldDisabled: disabled
+          principalAttributeList: id,name,phone,email
+          passwordEncoder:
+            type: PBKDF2
+            secret: "df5f681c-c82c-11eb-b8bc-0242ac130003"
+            strength: 270000
+  logout:
+    followServiceRedirects: true
+  ticket:
+    tgt:
+      timeout:
+        maxTimeToLiveInSeconds: 172800

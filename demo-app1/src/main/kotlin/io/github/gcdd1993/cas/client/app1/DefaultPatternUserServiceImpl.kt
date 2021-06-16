@@ -40,6 +40,7 @@ class DefaultPatternUserServiceImpl : DefaultPatternUserService {
     }
 
     override fun handleCasRemoteSingleLogout(serviceTicket: String) {
+        // 这里未删除cookie，所以在其他地方必须处理token过期
         log.info("cas remote single out success, tgt: {}", serviceTicket)
     }
 

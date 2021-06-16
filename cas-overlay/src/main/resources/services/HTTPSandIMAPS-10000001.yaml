@@ -1,8 +1,13 @@
 --- !<org.apereo.cas.services.RegexRegisteredService>
-serviceId: "https?://localhost:8091/.*"
-name: "demo-app1"
 id: 10000001
-description: "demo-app1."
+name: "demo-app1"
+description: "示例App-1"
+serviceId: "https?://localhost:8091/.*"
+evaluationOrder: 10
+logoutType: BACK_CHANNEL
+logoutUrl: http://localhost:8091/server/back_channel_logout
+usernameAttributeProvider: !<org.apereo.cas.services.PrincipalAttributeRegisteredServiceUsernameProvider>
+  usernameAttribute: muid
 attributeReleasePolicy: !<org.apereo.cas.services.ReturnAllAttributeReleasePolicy> { }
 accessStrategy: !<org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy>
   enabled: true
